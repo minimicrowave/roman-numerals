@@ -25,7 +25,7 @@ function convertDigits(digit) {
 function computeRomanAlphabets(digit, finalRomanAlphabets = '') {
 	let [ prevBase, nearestBase ] = getNearestBase(digit);
 	let nearestDenominator = DENOMINATORS[nearestBase];
-    let prevDenominator = DENOMINATORS[prevBase];
+	let prevDenominator = DENOMINATORS[prevBase];
 
 	if (digit === nearestBase) {
 		finalRomanAlphabets += ROMAN_ALPHABETS[nearestBase];
@@ -34,23 +34,19 @@ function computeRomanAlphabets(digit, finalRomanAlphabets = '') {
 		finalRomanAlphabets += ROMAN_ALPHABETS[nearestDenominator] + ROMAN_ALPHABETS[nearestBase];
 		digit -= nearestBase - nearestDenominator;
 	} else if (digit <= nearestBase - nearestDenominator) {
-        console.log(digit, nearestBase - nearestDenominator)
-		let noOfRepetitions = (digit - prevBase) / prevDenominator;
-		console.log('help here', nearestDenominator, noOfRepetitions, digit);
-		digit -= prevDenominator * noOfRepetitions + prevBase;
-
-		console.log('help', nearestDenominator, noOfRepetitions, digit);
-
-		finalRomanAlphabets +=
-			ROMAN_ALPHABETS[prevBase] + ROMAN_ALPHABETS[prevDenominator].repeat(noOfRepetitions);
-		console.log(digit, finalRomanAlphabets);
+        console.log('ended up here ', digit, nearestBase)
+        let noOfRepetitions = digit / nearestDenominator;
+        finalRomanAlphabets += ROMAN_ALPHABETS[nearestDenominator].repeat(noOfRepetitions);
+        digit -= nearestDenominator * noOfRepetitions
+        
 	} else {
 		finalRomanAlphabets += ROMAN_ALPHABETS[nearestDenominator];
 		digit -= nearestDenominator;
 	}
 
-	if (digit !== 0) return computeRomanAlphabets(digit, finalRomanAlphabets);
-	else return finalRomanAlphabets;
+	// if (digit !== 0) return computeRomanAlphabets(digit, finalRomanAlphabets);
+    // else 
+    return finalRomanAlphabets;
 }
 
 function getNearestBase(digit) {
