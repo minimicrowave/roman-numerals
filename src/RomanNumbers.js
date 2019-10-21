@@ -1,17 +1,21 @@
-const { DECIMAL_ZERO, BLANK_STRING, ROMAN_ALPHABETS, ROMAN_BASES } = require('./consts');
-const { isNumber, isString } = require('./utils');
+const {
+	DECIMAL_ZERO,
+	BLANK_STRING,
+	ROMAN_DECIMAL_MAP,
+	ROMAN_BASES,
+	ROMAN_ALPHABETS
+} = require('./consts');
+const { validateNumeral, validateRoman } = require('./validations');
 
 function convertDigits(digit) {
-	if (isNumber(digit)) {
-		return computeRomanAlphabets(digit);
-	}
-	return;
+	validateNumeral(input);
+	return computeRomanAlphabets(digit);
 }
 
 function computeRomanAlphabets(digit, finalRomanAlphabets = BLANK_STRING) {
 	let max = getMaxBase(digit);
 
-	finalRomanAlphabets += ROMAN_ALPHABETS[max];
+	finalRomanAlphabets += ROMAN_DECIMAL_MAP[max];
 	digit -= max;
 
 	if (digit === DECIMAL_ZERO) return finalRomanAlphabets;
@@ -26,13 +30,35 @@ function getMaxBase(digit) {
 	}
 }
 
-// =====================================================================================================
+// ===========================================================================================
 
 function convertRoman(input) {
-	if (isString(input)) {
-		return 'hi';
+	validateRoman(input);
+	return computeRomanNumbers(input.toUpperCase());
+}
+
+function computeRomanNumbers(input, sum = 0) {
+	let [ firstChar, secondChar, ...remainder ] = input;
+	let finalArray;
+
+	let number = getNumberByAlphabet(firstChar + secondChar);
+	if (!number) {
+		number = getNumberByAlphabet(firstChar);
+		finalArray = [ secondChar, finalArray ];
+	} else {
+		finalArray = remainder;
 	}
-	return;
+	console.log(number);
+
+	sum += Number(number);
+
+	if (!finalArray || finalArray.length === 0) return sum;
+	else return computeRomanNumbers(finalArray, sum);
+}
+
+function getNumberByAlphabet(character) {
+    console.log(Object.keys(ROMAN_DECIMAL_MAP).find((key) => ROMAN_DECIMAL_MAP[key] === character))
+	return Object.keys(ROMAN_DECIMAL_MAP).find((key) => ROMAN_DECIMAL_MAP[key] === character);
 }
 
 module.exports = { convertDigits, convertRoman };

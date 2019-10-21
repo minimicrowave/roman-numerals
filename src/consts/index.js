@@ -2,7 +2,7 @@ const DECIMAL_ZERO = 0;
 
 const BLANK_STRING = '';
 
-const ROMAN_ALPHABETS = {
+const ROMAN_DECIMAL_MAP = {
 	1: 'I',
 	4: 'IV',
 	5: 'V',
@@ -14,6 +14,8 @@ const ROMAN_ALPHABETS = {
 	100: 'C'
 };
 
-const ROMAN_BASES = Object.keys(ROMAN_ALPHABETS).map(Number).reverse();
+const ROMAN_BASES = Object.keys(ROMAN_DECIMAL_MAP).map(Number).reverse();
 
-module.exports = { DECIMAL_ZERO, BLANK_STRING, ROMAN_ALPHABETS, ROMAN_BASES };
+const ROMAN_ALPHABETS = Object.values(ROMAN_DECIMAL_MAP);
+
+module.exports = { DECIMAL_ZERO, BLANK_STRING, ROMAN_DECIMAL_MAP, ROMAN_ALPHABETS, ROMAN_BASES };
