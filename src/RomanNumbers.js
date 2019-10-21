@@ -1,68 +1,53 @@
 const ROMAN_ALPHABETS = {
 	1: 'I',
+	4: 'IV',
 	5: 'V',
+	9: 'IX',
 	10: 'X',
+	40: 'XL',
 	50: 'L',
+	90: 'XC',
 	100: 'C'
 };
 
-const DENOMINATORS = {
-	1: 1,
-	5: 1,
-	10: 1,
-	50: 10,
-	100: 10
-};
+const DECIMAL_ZERO = 0;
+const BLANK_STRING = '';
+
+const ROMAN_BASES = Object.keys(ROMAN_ALPHABETS).map(Number).reverse();
 
 function convertDigits(digit) {
 	if (isNumber(digit)) {
-		// if (ROMAN_ALPHABETS[digit]) return ROMAN_ALPHABETS[digit];
 		return computeRomanAlphabets(digit);
 	}
 	return;
 }
 
-function computeRomanAlphabets(digit, finalRomanAlphabets = '') {
-	let [ prevBase, nearestBase ] = getNearestBase(digit);
-	let nearestDenominator = DENOMINATORS[nearestBase];
-	let prevDenominator = DENOMINATORS[prevBase];
-
-	if (digit === nearestBase) {
-		finalRomanAlphabets += ROMAN_ALPHABETS[nearestBase];
-		digit -= nearestBase;
-	} else if (digit >= nearestBase - nearestDenominator) {
-		finalRomanAlphabets += ROMAN_ALPHABETS[nearestDenominator] + ROMAN_ALPHABETS[nearestBase];
-		digit -= nearestBase - nearestDenominator;
-	} else if (digit <= nearestBase - nearestDenominator) {
-        console.log('ended up here ', digit, nearestBase)
-        let noOfRepetitions = digit / nearestDenominator;
-        finalRomanAlphabets += ROMAN_ALPHABETS[nearestDenominator].repeat(noOfRepetitions);
-        digit -= nearestDenominator * noOfRepetitions
-        
-	} else {
-		finalRomanAlphabets += ROMAN_ALPHABETS[nearestDenominator];
-		digit -= nearestDenominator;
+function computeRomanAlphabets(digit, finalRomanAlphabets = BLANK_STRING) {
+	let max;
+	for (base of ROMAN_BASES) {
+		if (digit >= base) {
+			max = base;
+			break;
+		}
 	}
+	finalRomanAlphabets += ROMAN_ALPHABETS[max];
+	digit -= max;
 
-	// if (digit !== 0) return computeRomanAlphabets(digit, finalRomanAlphabets);
-    // else 
-    return finalRomanAlphabets;
-}
-
-function getNearestBase(digit) {
-	let ROMAN_NUMBER_BASES = Object.keys(ROMAN_ALPHABETS).map(Number);
-	let prevBase = 0;
-
-	for (let i = 0; i < ROMAN_NUMBER_BASES.length; i++) {
-		let currentBase = ROMAN_NUMBER_BASES[i];
-
-		if (digit <= currentBase && digit > prevBase) return [ prevBase, currentBase ];
-		prevBase = currentBase;
-	}
+	if (digit === DECIMAL_ZERO) return finalRomanAlphabets;
+	else return computeRomanAlphabets(digit, finalRomanAlphabets);
 }
 
 function isNumber(digit) {
 	return typeof digit === 'number';
 }
 
-module.exports = { convertDigits };
+// =====================================================================================================
+
+function convertRoman(input) {
+	if (typeof input === 'string') {
+		return 'hi';
+    }
+    return;
+}
+
+module.exports = { convertDigits, convertRoman };
