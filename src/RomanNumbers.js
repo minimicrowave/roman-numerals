@@ -1,19 +1,5 @@
-const ROMAN_ALPHABETS = {
-	1: 'I',
-	4: 'IV',
-	5: 'V',
-	9: 'IX',
-	10: 'X',
-	40: 'XL',
-	50: 'L',
-	90: 'XC',
-	100: 'C'
-};
-
-const DECIMAL_ZERO = 0;
-const BLANK_STRING = '';
-
-const ROMAN_BASES = Object.keys(ROMAN_ALPHABETS).map(Number).reverse();
+const { DECIMAL_ZERO, BLANK_STRING, ROMAN_ALPHABETS, ROMAN_BASES } = require('./consts');
+const { isNumber, isString } = require('./utils');
 
 function convertDigits(digit) {
 	if (isNumber(digit)) {
@@ -23,13 +9,8 @@ function convertDigits(digit) {
 }
 
 function computeRomanAlphabets(digit, finalRomanAlphabets = BLANK_STRING) {
-	let max;
-	for (base of ROMAN_BASES) {
-		if (digit >= base) {
-			max = base;
-			break;
-		}
-	}
+	let max = getMaxBase(digit);
+
 	finalRomanAlphabets += ROMAN_ALPHABETS[max];
 	digit -= max;
 
@@ -37,17 +18,21 @@ function computeRomanAlphabets(digit, finalRomanAlphabets = BLANK_STRING) {
 	else return computeRomanAlphabets(digit, finalRomanAlphabets);
 }
 
-function isNumber(digit) {
-	return typeof digit === 'number';
+function getMaxBase(digit) {
+	for (base of ROMAN_BASES) {
+		if (digit >= base) {
+			return base;
+		}
+	}
 }
 
 // =====================================================================================================
 
 function convertRoman(input) {
-	if (typeof input === 'string') {
+	if (isString(input)) {
 		return 'hi';
-    }
-    return;
+	}
+	return;
 }
 
 module.exports = { convertDigits, convertRoman };
