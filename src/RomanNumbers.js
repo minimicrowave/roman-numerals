@@ -1,10 +1,7 @@
-const {
-	DECIMAL_ZERO,
-	BLANK_STRING,
-	ROMAN_DECIMAL_MAP,
-	ROMAN_BASES,
-} = require('./consts');
+const { DECIMAL_ZERO, BLANK_STRING, ROMAN_DECIMAL_MAP, ROMAN_BASES } = require('./consts');
 const { validateNumeral, validateRoman } = require('./validations');
+
+const { filterUndefinedElements } = require('./utils');
 
 function convertDigits(digit) {
 	validateNumeral(input);
@@ -43,7 +40,7 @@ function computeRomanNumbers(input, sum = 0) {
 	let number = getNumberByAlphabet(firstChar + secondChar);
 	if (!number) {
 		number = getNumberByAlphabet(firstChar);
-		finalArray = [ secondChar, remainder ].filter(el => el);
+		finalArray = filterUndefinedElements([ secondChar, remainder ]);
 	} else {
 		finalArray = remainder;
 	}

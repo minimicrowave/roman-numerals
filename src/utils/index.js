@@ -6,4 +6,8 @@ function isString(input) {
 	return typeof input === 'string';
 }
 
-module.exports = { isNumber, isString };
+function filterUndefinedElements(array) {
+	return array.filter((el) => el);
+}
+
+module.exports = { isNumber, isString, filterUndefinedElements };
