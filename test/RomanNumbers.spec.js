@@ -64,26 +64,32 @@ describe('Roman Numerals', () => {
 	// });
 
 	describe('convertRoman()', () => {
-		it('should throw Error if no input', () => {
-			try {
-				convertRoman();
-				throw new Error('Test should not pass');
-			} catch (err) {
-				expect(err).to.be.instanceOf(InvalidInputException);
-				expect(err.message).to.equal('Invalid input');
-			}
-		});
-		it('should throw Error if invalid input', () => {
-			try {
-				convertRoman('hiiii');
-				throw new Error('Test should not pass');
-			} catch (err) {
-				expect(err).to.be.instanceOf(InvalidInputException);
-				expect(err.message).to.equal('Invalid input');
-			}
-		});
+		// it('should throw Error if no input', () => {
+		// 	try {
+		// 		convertRoman();
+		// 		throw new Error('Test should not pass');
+		// 	} catch (err) {
+		// 		expect(err).to.be.instanceOf(InvalidInputException);
+		// 		expect(err.message).to.equal('Invalid input');
+		// 	}
+		// });
+		// it('should throw Error if invalid input', () => {
+		// 	try {
+		// 		convertRoman('hiiii');
+		// 		throw new Error('Test should not pass');
+		// 	} catch (err) {
+		// 		expect(err).to.be.instanceOf(InvalidInputException);
+		// 		expect(err.message).to.equal('Invalid input');
+		// 	}
+		// });
 		it('should return "IV" if input = 4', () => {
 			expect(convertRoman('IV')).to.equal(4);
+		});
+		it('should return "II" if input = 2', () => {
+			expect(convertRoman('II')).to.equal(2);
+		});
+		it('should return "LVI" if input = 56', () => {
+			expect(convertRoman('LVI')).to.equal(56);
 		});
 	});
 });

@@ -3,7 +3,6 @@ const {
 	BLANK_STRING,
 	ROMAN_DECIMAL_MAP,
 	ROMAN_BASES,
-	ROMAN_ALPHABETS
 } = require('./consts');
 const { validateNumeral, validateRoman } = require('./validations');
 
@@ -44,20 +43,18 @@ function computeRomanNumbers(input, sum = 0) {
 	let number = getNumberByAlphabet(firstChar + secondChar);
 	if (!number) {
 		number = getNumberByAlphabet(firstChar);
-		finalArray = [ secondChar, finalArray ];
+		finalArray = [ secondChar, remainder ].filter(el => el);
 	} else {
 		finalArray = remainder;
 	}
-	console.log(number);
 
 	sum += Number(number);
 
-	if (!finalArray || finalArray.length === 0) return sum;
+	if (finalArray.length === 0) return sum;
 	else return computeRomanNumbers(finalArray, sum);
 }
 
 function getNumberByAlphabet(character) {
-    console.log(Object.keys(ROMAN_DECIMAL_MAP).find((key) => ROMAN_DECIMAL_MAP[key] === character))
 	return Object.keys(ROMAN_DECIMAL_MAP).find((key) => ROMAN_DECIMAL_MAP[key] === character);
 }
 
