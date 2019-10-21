@@ -16,23 +16,41 @@ const DENOMINATORS = {
 
 function convertDigits(digit) {
 	if (isNumber(digit)) {
+		// if (ROMAN_ALPHABETS[digit]) return ROMAN_ALPHABETS[digit];
 		return computeRomanAlphabets(digit);
 	}
 	return;
 }
 
-function computeRomanAlphabets(digit) {
-	let computedRomanAlphabet = '';
-	if (ROMAN_ALPHABETS[digit]) return ROMAN_ALPHABETS[digit];
-	let nearestBase = getNearestBase(digit);
+function computeRomanAlphabets(digit, finalRomanAlphabets = '') {
+	let [ prevBase, nearestBase ] = getNearestBase(digit);
 	let nearestDenominator = DENOMINATORS[nearestBase];
-	// console.log(digit, nearestBase, nearestDenominator);
-	if (digit >= nearestBase - nearestDenominator) {
-		computedRomanAlphabet += ROMAN_ALPHABETS[nearestDenominator] + ROMAN_ALPHABETS[nearestBase];
-		// console.log('yeah', digit, computedRomanAlphabet);
-		return computedRomanAlphabet;
+    let prevDenominator = DENOMINATORS[prevBase];
+
+	if (digit === nearestBase) {
+		finalRomanAlphabets += ROMAN_ALPHABETS[nearestBase];
+		digit -= nearestBase;
+	} else if (digit >= nearestBase - nearestDenominator) {
+		finalRomanAlphabets += ROMAN_ALPHABETS[nearestDenominator] + ROMAN_ALPHABETS[nearestBase];
+		digit -= nearestBase - nearestDenominator;
+	} else if (digit <= nearestBase - nearestDenominator) {
+        console.log(digit, nearestBase - nearestDenominator)
+		let noOfRepetitions = (digit - prevBase) / prevDenominator;
+		console.log('help here', nearestDenominator, noOfRepetitions, digit);
+		digit -= prevDenominator * noOfRepetitions + prevBase;
+
+		console.log('help', nearestDenominator, noOfRepetitions, digit);
+
+		finalRomanAlphabets +=
+			ROMAN_ALPHABETS[prevBase] + ROMAN_ALPHABETS[prevDenominator].repeat(noOfRepetitions);
+		console.log(digit, finalRomanAlphabets);
+	} else {
+		finalRomanAlphabets += ROMAN_ALPHABETS[nearestDenominator];
+		digit -= nearestDenominator;
 	}
-	return ROMAN_ALPHABETS[1].repeat(digit);
+
+	if (digit !== 0) return computeRomanAlphabets(digit, finalRomanAlphabets);
+	else return finalRomanAlphabets;
 }
 
 function getNearestBase(digit) {
@@ -42,7 +60,7 @@ function getNearestBase(digit) {
 	for (let i = 0; i < ROMAN_NUMBER_BASES.length; i++) {
 		let currentBase = ROMAN_NUMBER_BASES[i];
 
-		if (digit <= currentBase && digit > prevBase) return currentBase;
+		if (digit <= currentBase && digit > prevBase) return [ prevBase, currentBase ];
 		prevBase = currentBase;
 	}
 }
